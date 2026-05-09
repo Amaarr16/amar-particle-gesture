@@ -4,21 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ultimate Particle System</title>
+    <title>Ultimate Particle System | Amar</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary: #00f3ff;
             --secondary: #bd00ff;
             --bg: #050505;
-            --glass: rgba(20, 25, 30, 0.6);
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
         }
 
         body {
             margin: 0;
             overflow: hidden;
             background-color: var(--bg);
-            font-family: 'Segoe UI', monospace;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: white;
         }
 
@@ -26,15 +27,17 @@
             display: block;
         }
 
+        /* --- HUD Panels --- */
         .hud-panel {
             position: absolute;
-            background: var(--glass);
+            background: rgba(20, 25, 30, 0.6);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border);
             border-left: 3px solid var(--primary);
             padding: 20px;
             border-radius: 4px;
             pointer-events: none;
+            z-index: 10;
         }
 
         #top-left {
@@ -47,6 +50,7 @@
             font-size: 10px;
             color: #aaa;
             letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
         .stat-value {
@@ -57,51 +61,47 @@
             display: block;
         }
 
-        #video-container {
-            position: absolute;
-            bottom: 30px;
-            right: 30px;
-            width: 200px;
-            height: 150px;
-            border: 1px solid #333;
-            overflow: hidden;
-            opacity: 0.5;
-        }
-
-        video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transform: scaleX(-1);
-        }
-
-        #loader {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: var(--primary);
-            font-size: 14px;
-            letter-spacing: 2px;
-        }
-
-        /* --- New Liquid Glass Social Panel --- */
-        #social-panel {
+        /* --- Bottom Left Container (Author + Socials) --- */
+        .bottom-left-container {
             position: absolute;
             bottom: 30px;
             left: 30px;
-            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 15;
+        }
+
+        .author-tag {
+            background: var(--glass);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
-            border-left: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 10px 18px;
+            width: fit-content;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Applied Italic and Reduced Boldness here */
+        .author-name {
+            font-size: 14px;
+            font-weight: 500;
+            font-style: italic;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+
+        #social-panel {
+            background: var(--glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
             border-radius: 16px;
             padding: 15px 25px;
             display: flex;
             gap: 25px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            z-index: 10;
             transition: transform 0.3s ease, background 0.3s ease;
         }
 
@@ -121,6 +121,38 @@
             color: var(--primary);
             transform: scale(1.1);
             filter: drop-shadow(0 0 8px var(--primary));
+        }
+
+        /* --- Video & Loader --- */
+        #video-container {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            width: 180px;
+            height: 135px;
+            border: 1px solid #333;
+            border-radius: 8px;
+            overflow: hidden;
+            opacity: 0.4;
+            z-index: 5;
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scaleX(-1);
+        }
+
+        #loader {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--primary);
+            font-size: 14px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
         }
     </style>
 </head>
@@ -142,12 +174,19 @@
         </div>
     </div>
 
-    <div id="social-panel">
-        <a href="https://www.instagram.com/amaarrr____" target="_blank" title="Instagram"><i
-                class="fab fa-instagram"></i></a>
-        <a href="https://www.linkedin.com/in/amardeep16/" target="_blank" title="LinkedIn"><i
-                class="fab fa-linkedin-in"></i></a>
-        <a href="https://github.com/Amaarr16/" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+    <div class="bottom-left-container">
+        <div class="author-tag">
+            <span class="stat-label" style="display:block; margin-bottom: 2px;">Architect</span>
+            <span class="author-name">Made by Amar❤️</span>
+        </div>
+
+        <div id="social-panel">
+            <a href="https://www.instagram.com/amaarrr____" target="_blank" title="Instagram"><i
+                    class="fab fa-instagram"></i></a>
+            <a href="https://www.linkedin.com/in/amardeep16/" target="_blank" title="LinkedIn"><i
+                    class="fab fa-linkedin-in"></i></a>
+            <a href="https://github.com/Amaarr16/" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+        </div>
     </div>
 
     <div id="video-container">
@@ -158,9 +197,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
 
     <script>
-        // --- CONFIG ---
         const PARTICLE_COUNT = 15000;
-
         let scene, camera, renderer, particles;
         let videoElement = document.getElementById('input_video');
         let handsModel;
@@ -169,7 +206,6 @@
         let currentShapeIndex = 0;
         let lastFistTime = 0;
 
-        // --- SHAPE DEFINITIONS ---
         const SHAPES = [
             {
                 name: "SPHERE",
@@ -218,12 +254,12 @@
             {
                 name: "SATURN",
                 func: (i, total) => {
-                    if (i < total * 0.7) { // Planet
+                    if (i < total * 0.7) {
                         const r = 8;
                         const phi = Math.acos(-1 + (2 * i) / (total * 0.7));
                         const theta = Math.sqrt((total * 0.7) * Math.PI) * phi;
                         return { x: r * Math.cos(theta) * Math.sin(phi), y: r * Math.sin(theta) * Math.sin(phi), z: r * Math.cos(phi) };
-                    } else { // Ring
+                    } else {
                         const angle = Math.random() * Math.PI * 2;
                         const r = 12 + Math.random() * 6;
                         return { x: r * Math.cos(angle), y: (Math.random() - 0.5) * 0.5, z: r * Math.sin(angle) };
@@ -269,10 +305,9 @@
             {
                 name: "MÖBIUS STRIP",
                 func: (i, total) => {
-                    const u = (i / total) * Math.PI * 2 * 5; // Long axis
-                    const v = (Math.random() - 0.5) * 4; // Width
-                    const R = 12; // Radius
-                    // Möbius parametric equations
+                    const u = (i / total) * Math.PI * 2 * 5;
+                    const v = (Math.random() - 0.5) * 4;
+                    const R = 12;
                     const x = (R + v * Math.cos(u / 2)) * Math.cos(u);
                     const y = (R + v * Math.cos(u / 2)) * Math.sin(u);
                     const z = v * Math.sin(u / 2);
@@ -284,27 +319,20 @@
                 func: (i, total) => {
                     const h = 20;
                     const y = (Math.random() - 0.5) * h;
-                    const r = Math.abs(y) * 0.8 + 1; // Radius wider at top/bottom
+                    const r = Math.abs(y) * 0.8 + 1;
                     const angle = Math.random() * Math.PI * 2;
-                    return {
-                        x: r * Math.cos(angle),
-                        y: y,
-                        z: r * Math.sin(angle)
-                    };
+                    return { x: r * Math.cos(angle), y: y, z: r * Math.sin(angle) };
                 }
             },
             {
                 name: "ATOMIC NUCLEUS",
                 func: (i, total) => {
-                    // 30% Nucleus, 70% Electrons
                     if (i < total * 0.3) {
-                        // Dense center
                         const r = 4 * Math.cbrt(Math.random());
                         const theta = Math.random() * Math.PI * 2;
                         const phi = Math.acos(2 * Math.random() - 1);
                         return { x: r * Math.sin(phi) * Math.cos(theta), y: r * Math.sin(phi) * Math.sin(theta), z: r * Math.cos(phi) };
                     } else {
-                        // Electron clouds (3 rings)
                         const ring = i % 3;
                         const angle = (i / total) * Math.PI * 20;
                         const rad = 15;
@@ -317,22 +345,14 @@
             {
                 name: "SUPER STAR",
                 func: (i, total) => {
-                    // Simple parametric star/spike ball
                     const rBase = 2;
                     const spikeLen = 14;
-                    // Distribute points on sphere
                     const u = Math.random() * Math.PI * 2;
                     const v = Math.acos(2 * Math.random() - 1);
-                    // Modulate radius to create spikes
                     const spikes = 6;
                     const deform = Math.pow(Math.sin(v * spikes) * Math.cos(u * spikes), 2);
                     const r = rBase + deform * spikeLen;
-
-                    return {
-                        x: r * Math.sin(v) * Math.cos(u),
-                        y: r * Math.sin(v) * Math.sin(u),
-                        z: r * Math.cos(v)
-                    };
+                    return { x: r * Math.sin(v) * Math.cos(u), y: r * Math.sin(v) * Math.sin(u), z: r * Math.cos(v) };
                 }
             }
         ];
@@ -340,9 +360,6 @@
         initThree();
         initCamera();
 
-        // -----------------------------------------------------------
-        // 1. THREE.JS
-        // -----------------------------------------------------------
         function initThree() {
             scene = new THREE.Scene();
             scene.fog = new THREE.FogExp2(0x050505, 0.02);
@@ -355,7 +372,6 @@
             renderer.setPixelRatio(window.devicePixelRatio);
             document.body.appendChild(renderer.domElement);
 
-            // Create Particles
             const geometry = new THREE.BufferGeometry();
             const posArray = new Float32Array(PARTICLE_COUNT * 3);
             const colArray = new Float32Array(PARTICLE_COUNT * 3);
@@ -368,7 +384,6 @@
                 positions.push({ x: posArray[i * 3], y: posArray[i * 3 + 1], z: posArray[i * 3 + 2] });
                 targetPositions.push({ x: 0, y: 0, z: 0 });
 
-                // Color Gradient (Teal to Blue)
                 colArray[i * 3] = 0;
                 colArray[i * 3 + 1] = 0.5 + Math.random() * 0.5;
                 colArray[i * 3 + 2] = 1;
@@ -377,7 +392,6 @@
             geometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
             geometry.setAttribute('color', new THREE.BufferAttribute(colArray, 3));
 
-            // Glow Texture
             const canvas = document.createElement('canvas');
             canvas.width = 32; canvas.height = 32;
             const ctx = canvas.getContext('2d');
@@ -407,16 +421,11 @@
             currentShapeIndex = index;
             const shape = SHAPES[index];
             document.getElementById('shape-name').innerText = shape.name;
-
-            // Recalculate targets
             for (let i = 0; i < PARTICLE_COUNT; i++) {
                 targetPositions[i] = shape.func(i, PARTICLE_COUNT);
             }
         }
 
-        // -----------------------------------------------------------
-        // 2. CAMERA & AI
-        // -----------------------------------------------------------
         async function initCamera() {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 480 } });
@@ -445,7 +454,6 @@
             document.getElementById('loader').style.display = 'none';
             document.getElementById('status-text').innerText = "ONLINE";
             document.getElementById('status-text').style.color = "#00f3ff";
-
             processVideo();
         }
 
@@ -457,27 +465,16 @@
         function onHandResults(results) {
             if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
                 const lm = results.multiHandLandmarks[0];
-                const index = lm[8]; // Index Tip
+                const index = lm[8];
 
-                // 1. ROTATION
                 particles.rotation.y = (index.x - 0.5) * 2.5;
                 particles.rotation.x = (index.y - 0.5) * 2.5;
 
-                // 2. FIST DETECTION
-                const isFist = (
-                    lm[8].y > lm[6].y &&
-                    lm[12].y > lm[10].y &&
-                    lm[16].y > lm[14].y &&
-                    lm[20].y > lm[18].y
-                );
-
+                const isFist = (lm[8].y > lm[6].y && lm[12].y > lm[10].y && lm[16].y > lm[14].y && lm[20].y > lm[18].y);
                 const now = Date.now();
                 if (isFist && now - lastFistTime > 1500) {
                     lastFistTime = now;
-                    const nextIndex = (currentShapeIndex + 1) % SHAPES.length;
-                    setShape(nextIndex);
-
-                    // Visual feedback: Flash
+                    setShape((currentShapeIndex + 1) % SHAPES.length);
                     const colors = particles.geometry.attributes.color;
                     for (let i = 0; i < colors.count; i++) colors.setXYZ(i, 1, 1, 1);
                     colors.needsUpdate = true;
@@ -485,37 +482,35 @@
             }
         }
 
-        // -----------------------------------------------------------
-        // 3. ANIMATION LOOP
-        // -----------------------------------------------------------
         function animate() {
             requestAnimationFrame(animate);
-
-            const positionsAttr = particles.geometry.attributes.position;
-            const colorsAttr = particles.geometry.attributes.color;
-            const arr = positionsAttr.array;
-            const carr = colorsAttr.array;
+            const posAttr = particles.geometry.attributes.position;
+            const colAttr = particles.geometry.attributes.color;
+            const arr = posAttr.array;
+            const carr = colAttr.array;
             const speed = 0.05;
 
             for (let i = 0; i < PARTICLE_COUNT; i++) {
                 const t = targetPositions[i];
                 const ix = i * 3, iy = i * 3 + 1, iz = i * 3 + 2;
-
-                // Move position
                 arr[ix] += (t.x - arr[ix]) * speed;
                 arr[iy] += (t.y - arr[iy]) * speed;
                 arr[iz] += (t.z - arr[iz]) * speed;
 
-                // Color fade back to blue
                 carr[ix] += (0 - carr[ix]) * 0.05;
                 carr[iy] += (0.8 - carr[iy]) * 0.05;
                 carr[iz] += (1.0 - carr[iz]) * 0.05;
             }
-
-            positionsAttr.needsUpdate = true;
-            colorsAttr.needsUpdate = true;
+            posAttr.needsUpdate = true;
+            colAttr.needsUpdate = true;
             renderer.render(scene, camera);
         }
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
     </script>
 </body>
 
