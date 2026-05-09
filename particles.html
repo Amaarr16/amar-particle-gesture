@@ -1,36 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ultimate Particle System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --primary: #00f3ff; --secondary: #bd00ff; --bg: #050505; --glass: rgba(20, 25, 30, 0.6); }
-        body { margin: 0; overflow: hidden; background-color: var(--bg); font-family: 'Segoe UI', monospace; color: white; }
-        canvas { display: block; }
-        
-        .hud-panel {
-            position: absolute; background: var(--glass); backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1); border-left: 3px solid var(--primary);
-            padding: 20px; border-radius: 4px; pointer-events: none;
+        :root {
+            --primary: #00f3ff;
+            --secondary: #bd00ff;
+            --bg: #050505;
+            --glass: rgba(20, 25, 30, 0.6);
         }
-        #top-left { top: 30px; left: 30px; width: 280px; }
-        .stat-label { font-size: 10px; color: #aaa; letter-spacing: 1px; }
-        .stat-value { font-size: 18px; font-weight: bold; color: var(--primary); margin-bottom: 10px; display: block;}
+
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: var(--bg);
+            font-family: 'Segoe UI', monospace;
+            color: white;
+        }
+
+        canvas {
+            display: block;
+        }
+
+        .hud-panel {
+            position: absolute;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-left: 3px solid var(--primary);
+            padding: 20px;
+            border-radius: 4px;
+            pointer-events: none;
+        }
+
+        #top-left {
+            top: 30px;
+            left: 30px;
+            width: 280px;
+        }
+
+        .stat-label {
+            font-size: 10px;
+            color: #aaa;
+            letter-spacing: 1px;
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: block;
+        }
 
         #video-container {
-            position: absolute; bottom: 30px; right: 30px;
-            width: 200px; height: 150px; 
-            border: 1px solid #333; overflow: hidden; opacity: 0.5;
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            width: 200px;
+            height: 150px;
+            border: 1px solid #333;
+            overflow: hidden;
+            opacity: 0.5;
         }
-        video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
-        
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scaleX(-1);
+        }
+
         #loader {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            color: var(--primary); font-size: 14px; letter-spacing: 2px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--primary);
+            font-size: 14px;
+            letter-spacing: 2px;
+        }
+
+        /* --- New Liquid Glass Social Panel --- */
+        #social-panel {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 15px 25px;
+            display: flex;
+            gap: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        #social-panel:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        #social-panel a {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 22px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        #social-panel a:hover {
+            color: var(--primary);
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 8px var(--primary));
         }
     </style>
 </head>
+
 <body>
 
     <div id="loader">INITIALIZING AI SYSTEMS...</div>
@@ -38,7 +132,7 @@
     <div id="top-left" class="hud-panel">
         <span class="stat-label">CURRENT FORM</span>
         <span id="shape-name" class="stat-value">SPHERE</span>
-        
+
         <span class="stat-label">SYSTEM STATUS</span>
         <span id="status-text" class="stat-value" style="color:yellow; font-size:14px">LOADING...</span>
 
@@ -46,6 +140,14 @@
             👋 <b>Move Hand:</b> Rotate View<br>
             ✊ <b>Make Fist:</b> Switch Shape (Cycle 12)
         </div>
+    </div>
+
+    <div id="social-panel">
+        <a href="https://www.instagram.com/amaarrr____" target="_blank" title="Instagram"><i
+                class="fab fa-instagram"></i></a>
+        <a href="https://www.linkedin.com/in/amardeep16/" target="_blank" title="LinkedIn"><i
+                class="fab fa-linkedin-in"></i></a>
+        <a href="https://github.com/Amaarr16/" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
     </div>
 
     <div id="video-container">
@@ -58,7 +160,7 @@
     <script>
         // --- CONFIG ---
         const PARTICLE_COUNT = 15000;
-        
+
         let scene, camera, renderer, particles;
         let videoElement = document.getElementById('input_video');
         let handsModel;
@@ -81,17 +183,17 @@
             {
                 name: "QUANTUM CUBE",
                 func: (i, total) => {
-                    const s = 18; 
+                    const s = 18;
                     const face = i % 6;
                     const u = (Math.random() - 0.5) * s;
                     const v = (Math.random() - 0.5) * s;
-                    const d = s/2;
-                    if(face===0) return {x: d, y: u, z: v};
-                    if(face===1) return {x: -d, y: u, z: v};
-                    if(face===2) return {x: u, y: d, z: v};
-                    if(face===3) return {x: u, y: -d, z: v};
-                    if(face===4) return {x: u, y: v, z: d};
-                    return {x: u, y: v, z: -d};
+                    const d = s / 2;
+                    if (face === 0) return { x: d, y: u, z: v };
+                    if (face === 1) return { x: -d, y: u, z: v };
+                    if (face === 2) return { x: u, y: d, z: v };
+                    if (face === 3) return { x: u, y: -d, z: v };
+                    if (face === 4) return { x: u, y: v, z: d };
+                    return { x: u, y: v, z: -d };
                 }
             },
             {
@@ -108,7 +210,7 @@
                 func: (i, total) => {
                     const r = 6; const h = 40; const turns = 6;
                     const angle = (i / total) * Math.PI * 2 * turns;
-                    const y = (i / total) * h - (h/2);
+                    const y = (i / total) * h - (h / 2);
                     const offset = (i % 2 === 0) ? 0 : Math.PI;
                     return { x: r * Math.cos(angle + offset), y: y, z: r * Math.sin(angle + offset) };
                 }
@@ -118,8 +220,8 @@
                 func: (i, total) => {
                     if (i < total * 0.7) { // Planet
                         const r = 8;
-                        const phi = Math.acos(-1 + (2 * i) / (total*0.7));
-                        const theta = Math.sqrt((total*0.7) * Math.PI) * phi;
+                        const phi = Math.acos(-1 + (2 * i) / (total * 0.7));
+                        const theta = Math.sqrt((total * 0.7) * Math.PI) * phi;
                         return { x: r * Math.cos(theta) * Math.sin(phi), y: r * Math.sin(theta) * Math.sin(phi), z: r * Math.cos(phi) };
                     } else { // Ring
                         const angle = Math.random() * Math.PI * 2;
@@ -135,9 +237,9 @@
                     const face = i % 4;
                     let u = Math.random(); let v = Math.random();
                     if (u + v > 1) { u = 1 - u; v = 1 - v; }
-                    const x = (u - 0.5) * b + (v - 0.5) * b; 
+                    const x = (u - 0.5) * b + (v - 0.5) * b;
                     const z = (u - 0.5) * b - (v - 0.5) * b;
-                    const y = -h/2 + (1 - u - v) * h; 
+                    const y = -h / 2 + (1 - u - v) * h;
                     return { x: x * 1.5, y: y, z: z * 1.5 };
                 }
             },
@@ -147,10 +249,10 @@
                     const arms = 5;
                     const spin = i / total * arms * Math.PI * 2;
                     const r = (i / total) * 20;
-                    return { 
-                        x: r * Math.cos(spin + i * 0.002), 
-                        y: (Math.random()-0.5) * (5 - r/5), 
-                        z: r * Math.sin(spin + i * 0.002) 
+                    return {
+                        x: r * Math.cos(spin + i * 0.002),
+                        y: (Math.random() - 0.5) * (5 - r / 5),
+                        z: r * Math.sin(spin + i * 0.002)
                     };
                 }
             },
@@ -159,8 +261,8 @@
                 func: (i, total) => {
                     const t = (i / total) * Math.PI * 2 * 4;
                     const x = 16 * Math.pow(Math.sin(t), 3);
-                    const y = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
-                    const z = (Math.random() - 0.5) * 4; 
+                    const y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
+                    const z = (Math.random() - 0.5) * 4;
                     return { x: x * 0.8, y: y * 0.8, z: z };
                 }
             },
@@ -171,10 +273,10 @@
                     const v = (Math.random() - 0.5) * 4; // Width
                     const R = 12; // Radius
                     // Möbius parametric equations
-                    const x = (R + v * Math.cos(u/2)) * Math.cos(u);
-                    const y = (R + v * Math.cos(u/2)) * Math.sin(u);
-                    const z = v * Math.sin(u/2);
-                    return {x, y, z};
+                    const x = (R + v * Math.cos(u / 2)) * Math.cos(u);
+                    const y = (R + v * Math.cos(u / 2)) * Math.sin(u);
+                    const z = v * Math.sin(u / 2);
+                    return { x, y, z };
                 }
             },
             {
@@ -197,18 +299,18 @@
                     // 30% Nucleus, 70% Electrons
                     if (i < total * 0.3) {
                         // Dense center
-                        const r = 4 * Math.cbrt(Math.random()); 
+                        const r = 4 * Math.cbrt(Math.random());
                         const theta = Math.random() * Math.PI * 2;
                         const phi = Math.acos(2 * Math.random() - 1);
                         return { x: r * Math.sin(phi) * Math.cos(theta), y: r * Math.sin(phi) * Math.sin(theta), z: r * Math.cos(phi) };
                     } else {
                         // Electron clouds (3 rings)
                         const ring = i % 3;
-                        const angle = (i/total) * Math.PI * 20;
+                        const angle = (i / total) * Math.PI * 20;
                         const rad = 15;
-                        if(ring === 0) return { x: rad * Math.cos(angle), y: rad * Math.sin(angle), z: (Math.random()-0.5) };
-                        if(ring === 1) return { x: rad * Math.cos(angle), z: rad * Math.sin(angle), y: (Math.random()-0.5) };
-                        return { y: rad * Math.cos(angle), z: rad * Math.sin(angle), x: (Math.random()-0.5) };
+                        if (ring === 0) return { x: rad * Math.cos(angle), y: rad * Math.sin(angle), z: (Math.random() - 0.5) };
+                        if (ring === 1) return { x: rad * Math.cos(angle), z: rad * Math.sin(angle), y: (Math.random() - 0.5) };
+                        return { y: rad * Math.cos(angle), z: rad * Math.sin(angle), x: (Math.random() - 0.5) };
                     }
                 }
             },
@@ -223,9 +325,9 @@
                     const v = Math.acos(2 * Math.random() - 1);
                     // Modulate radius to create spikes
                     const spikes = 6;
-                    const deform = Math.pow(Math.sin(v*spikes)*Math.cos(u*spikes), 2);
+                    const deform = Math.pow(Math.sin(v * spikes) * Math.cos(u * spikes), 2);
                     const r = rBase + deform * spikeLen;
-                    
+
                     return {
                         x: r * Math.sin(v) * Math.cos(u),
                         y: r * Math.sin(v) * Math.sin(u),
@@ -258,18 +360,18 @@
             const posArray = new Float32Array(PARTICLE_COUNT * 3);
             const colArray = new Float32Array(PARTICLE_COUNT * 3);
 
-            for(let i = 0; i < PARTICLE_COUNT; i++) {
-                posArray[i*3] = (Math.random()-0.5)*50;
-                posArray[i*3+1] = (Math.random()-0.5)*50;
-                posArray[i*3+2] = (Math.random()-0.5)*50;
-                
-                positions.push({x: posArray[i*3], y: posArray[i*3+1], z: posArray[i*3+2]});
-                targetPositions.push({x: 0, y: 0, z: 0});
-                
+            for (let i = 0; i < PARTICLE_COUNT; i++) {
+                posArray[i * 3] = (Math.random() - 0.5) * 50;
+                posArray[i * 3 + 1] = (Math.random() - 0.5) * 50;
+                posArray[i * 3 + 2] = (Math.random() - 0.5) * 50;
+
+                positions.push({ x: posArray[i * 3], y: posArray[i * 3 + 1], z: posArray[i * 3 + 2] });
+                targetPositions.push({ x: 0, y: 0, z: 0 });
+
                 // Color Gradient (Teal to Blue)
-                colArray[i*3] = 0; 
-                colArray[i*3+1] = 0.5 + Math.random()*0.5; 
-                colArray[i*3+2] = 1;
+                colArray[i * 3] = 0;
+                colArray[i * 3 + 1] = 0.5 + Math.random() * 0.5;
+                colArray[i * 3 + 2] = 1;
             }
 
             geometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
@@ -279,11 +381,11 @@
             const canvas = document.createElement('canvas');
             canvas.width = 32; canvas.height = 32;
             const ctx = canvas.getContext('2d');
-            const grd = ctx.createRadialGradient(16,16,0,16,16,16);
+            const grd = ctx.createRadialGradient(16, 16, 0, 16, 16, 16);
             grd.addColorStop(0, 'white');
             grd.addColorStop(1, 'transparent');
-            ctx.fillStyle = grd; ctx.fillRect(0,0,32,32);
-            
+            ctx.fillStyle = grd; ctx.fillRect(0, 0, 32, 32);
+
             const material = new THREE.PointsMaterial({
                 size: 0.25,
                 map: new THREE.Texture(canvas),
@@ -305,9 +407,9 @@
             currentShapeIndex = index;
             const shape = SHAPES[index];
             document.getElementById('shape-name').innerText = shape.name;
-            
+
             // Recalculate targets
-            for(let i=0; i<PARTICLE_COUNT; i++) {
+            for (let i = 0; i < PARTICLE_COUNT; i++) {
                 targetPositions[i] = shape.func(i, PARTICLE_COUNT);
             }
         }
@@ -331,7 +433,7 @@
         }
 
         function initMediaPipe() {
-            handsModel = new Hands({locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`});
+            handsModel = new Hands({ locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}` });
             handsModel.setOptions({
                 maxNumHands: 1,
                 modelComplexity: 0,
@@ -339,16 +441,16 @@
                 minTrackingConfidence: 0.5
             });
             handsModel.onResults(onHandResults);
-            
+
             document.getElementById('loader').style.display = 'none';
             document.getElementById('status-text').innerText = "ONLINE";
             document.getElementById('status-text').style.color = "#00f3ff";
-            
+
             processVideo();
         }
 
         async function processVideo() {
-            if (isVideoReady && handsModel) await handsModel.send({image: videoElement});
+            if (isVideoReady && handsModel) await handsModel.send({ image: videoElement });
             requestAnimationFrame(processVideo);
         }
 
@@ -356,17 +458,17 @@
             if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
                 const lm = results.multiHandLandmarks[0];
                 const index = lm[8]; // Index Tip
-                
+
                 // 1. ROTATION
                 particles.rotation.y = (index.x - 0.5) * 2.5;
                 particles.rotation.x = (index.y - 0.5) * 2.5;
 
                 // 2. FIST DETECTION
                 const isFist = (
-                    lm[8].y > lm[6].y &&  
-                    lm[12].y > lm[10].y && 
-                    lm[16].y > lm[14].y && 
-                    lm[20].y > lm[18].y    
+                    lm[8].y > lm[6].y &&
+                    lm[12].y > lm[10].y &&
+                    lm[16].y > lm[14].y &&
+                    lm[20].y > lm[18].y
                 );
 
                 const now = Date.now();
@@ -374,10 +476,10 @@
                     lastFistTime = now;
                     const nextIndex = (currentShapeIndex + 1) % SHAPES.length;
                     setShape(nextIndex);
-                    
+
                     // Visual feedback: Flash
                     const colors = particles.geometry.attributes.color;
-                    for(let i=0; i<colors.count; i++) colors.setXYZ(i, 1, 1, 1);
+                    for (let i = 0; i < colors.count; i++) colors.setXYZ(i, 1, 1, 1);
                     colors.needsUpdate = true;
                 }
             }
@@ -393,11 +495,11 @@
             const colorsAttr = particles.geometry.attributes.color;
             const arr = positionsAttr.array;
             const carr = colorsAttr.array;
-            const speed = 0.05; 
+            const speed = 0.05;
 
             for (let i = 0; i < PARTICLE_COUNT; i++) {
                 const t = targetPositions[i];
-                const ix = i*3, iy = i*3+1, iz = i*3+2;
+                const ix = i * 3, iy = i * 3 + 1, iz = i * 3 + 2;
 
                 // Move position
                 arr[ix] += (t.x - arr[ix]) * speed;
@@ -409,11 +511,12 @@
                 carr[iy] += (0.8 - carr[iy]) * 0.05;
                 carr[iz] += (1.0 - carr[iz]) * 0.05;
             }
-            
+
             positionsAttr.needsUpdate = true;
             colorsAttr.needsUpdate = true;
             renderer.render(scene, camera);
         }
     </script>
 </body>
+
 </html>
